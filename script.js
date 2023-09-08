@@ -42,6 +42,9 @@ async function singleMovie() {
             <div class="dh-ls">
                 <h2>${data.Title}</h2>
             </div>
+            <div class="dh-rs">
+            <i class="fa-solid fa-bookmark" onClick=addTofavorites('${id}') style="cursor: pointer;"></i>
+        </div>
         </div>
         <span class="italics-text"><i>${data.Year} &#x2022; ${data.Country} &#x2022; Rating - <span style="font-size: 18px;">${data.imdbRating}</span>/10 </i></span>
         <ul class="details-ul">
@@ -63,6 +66,29 @@ async function singleMovie() {
    // Display the movie details in the document
     document.querySelector('.movie-container').innerHTML = output
 
+}
+
+async function addTofavorites(id) {
+    console.log("fav-item", id);
+
+    localStorage.setItem(Math.random().toString(36).slice(2, 7), id);// math.random for the unique key and value pair
+    alert('Movie Added to Watchlist!');
+    
+}
+
+//Removing the movie from the favorites list  and also from the localstorage
+async function removeFromfavorites(id) {
+    console.log(id);
+    for (i in localStorage) {
+        // If the ID passed as argument matches with value associated with key, then removing it 
+        if (localStorage[i] == id) {
+            localStorage.removeItem(i)
+            break;
+        }
+    }
+    //Alerting the user and refreshing the page
+    alert('Movie Removed from Watchlist');
+    window.location.replace('favorite.html');
 }
 
 // Function to display a list of movies
@@ -92,6 +118,9 @@ async function displayMovieList(movies) {
                     <div>
                         <p class="fav-movie-name"><a href="movie.html?id=${id}">${i.Title}</a></p>
                         <p class="fav-movie-rating"><a href="movie.html?id=${id}">${i.Year}</a></p>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-bookmark" style="cursor:pointer;" onClick=addTofavorites('${id}')></i>
                     </div>
                 </div>
             </div>
