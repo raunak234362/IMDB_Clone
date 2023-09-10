@@ -1,7 +1,7 @@
 //Example - http://www.omdbapi.com/?i=tt3896198&apikey=84ff5c1b
 
 //API Key for OMDB API
-const key = '84ff5c1b';
+const apikey = '84ff5c1b';
 
 // references to HTML elements
 var searchInput = document.getElementById('Input');
@@ -23,7 +23,7 @@ async function singleMovie() {
     console.log(id);
 
     // Build the API URL for the specific movie using its ID
-    const url = `https://www.omdbapi.com/?i=${id}&apikey=${key}`
+    const url = `https://www.omdbapi.com/?i=${id}&apikey=84ff5c1b`
     
      // Fetch movie data and log it
     const res = await fetch(`${url}`);
@@ -69,12 +69,15 @@ async function singleMovie() {
 }
 
 async function addTofavorites(id) {
-    console.log("fav-item", id);
-
-    localStorage.setItem(Math.random().toString(36).slice(2, 7), id);// math.random for the unique key and value pair
-    alert('Movie Added to Watchlist!');
-    
+    // Check if the movie is already in favorites
+    if (!localStorage.getItem(id)) {
+        localStorage.setItem(id, 'true'); // You can set any value here, e.g., 'true'
+        alert('Movie Added to Watchlist!');
+    } else {
+        alert('Movie is already in Watchlist!');
+    }
 }
+
 
 //Removing the movie from the favorites list  and also from the localstorage
 async function removeFromfavorites(id) {
@@ -138,7 +141,7 @@ async function displayMovieList(movies) {
 // Function to search for movies based on user input
 async function findMovies() {
      // Construct the OMDB API URL for searching movies using user input
-    const url = `https://www.omdbapi.com/?s=${(searchInput.value).trim()}&page=1&apikey=${key}`
+    const url = `https://www.omdbapi.com/?s=${(searchInput.value).trim()}&page=1&apikey=84ff5c1b`
     const res = await fetch(`${url}`);
     const data = await res.json();
 
@@ -148,55 +151,49 @@ async function findMovies() {
     }
 }
 
-// Function to load and display favorite movies from localStorage
-async function MovieLoader() {
 
-    var output = ''
-     // Iterate through localStorage to get favorite movie IDs
-    for (i in localStorage) {
-        var id = localStorage.getItem(i);
-        if (id != null) {
-            // Construct the API URL for each favorite movie
-            const url = `https://www.omdbapi.com/?i=${id}&plot=full&apikey=${key}`
-            const res = await fetch(`${url}`);
+
+async function MovieLoader() {
+    var output = '';
+    // Iterate through localStorage keys (which are movie IDs)
+    for (const apikey in localStorage) {
+        const id = apikey;
+        // Construct the API URL for each favorite movie
+        const url = `https://www.omdbapi.com/?i=${id}&plot=full&apikey=84ff5c1b`; // Fixed the apiKey here
+        try {
+            const res = await fetch(url);
             const data = await res.json();
             console.log(data);
 
-
-            var img = ''
-            if (data.Poster) {
-                img = data.Poster
-            }
-            else { img = data.Title }
-            var Id = data.imdbID;
-
-            // HTML for displaying each favorite movie
-            output += `
-
-        <div class="fav-item">
-            <div class="fav-poster">
-                <a href="movie.html?id=${id}"><img src=${img} alt="Favourites Poster"></a>
-            </div>
-            <div class="fav-details">
-                <div class="fav-details-box">
-                    <div>
-                        <p class="fav-movie-name">${data.Title}</p>
-                        <p class="fav-movie-rating">${data.Year} &middot; <span
-                                style="font-size: 15px; font-weight: 600;">${data.imdbRating}</span>/10</p>
+            // Check if the movie data is available
+            if (data && data.Poster) {
+                // HTML for displaying each favorite movie
+                output += `
+                <div class="fav-item">
+                    <div class="fav-poster">
+                        <a href="movie.html?id=${id}"><img src=${data.Poster} alt="Favourites Poster"></a>
                     </div>
-                    <div style="color: maroon">
-                        <i class="fa-solid fa-trash" style="cursor:pointer;" onClick=removeFromfavorites('${Id}')></i>
+                    <div class="fav-details">
+                        <div class="fav-details-box">
+                            <div>
+                                <p class="fav-movie-name">${data.Title}</p>
+                                <p class="fav-movie-rating">${data.Year} &middot; <span style="font-size: 15px; font-weight: 600;">${data.imdbRating}</span>/10</p>
+                            </div>
+                            <div style="color: maroon">
+                                <i class="fa-solid fa-trash" style="cursor:pointer;" onClick=removeFromfavorites('${id}')></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-       `;
+                `;
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
-
     }
-       // Display the favorite movies in the document
-    document.querySelector('.fav-container').innerHTML = output;
+    // Display the favorite movies in the document
+    const favContainer = document.querySelector('.fav-container');
+    if (favContainer) {
+        favContainer.innerHTML = output;
+    }
 }
-
-

@@ -4,11 +4,6 @@
     padding: 0px;
 }
 
-:root{
-    --md-dark-color: #0f0036;
-    --dark-color: #171717;
-    --light-dark-color: #1b0020;
-}
 *{
     padding: 0;
     margin: 0;
@@ -30,7 +25,7 @@ img{
 }
 .wrapper{
     min-height: 100vh;
-    background-color: var(--dark-color);
+    background-color: rgb(48, 54, 56);
 }
 .wrapper .container{
     max-width: 1200px;
@@ -40,11 +35,11 @@ img{
 
 .logo{
     padding: 1rem 0;
-    border-bottom: 1px solid var(--light-dark-color);
+    border-bottom: 1px solid rgb(3, 45, 45);
 }
 .logo p{
     font-size: 2rem;
-    color: #fff;
+    color: #ffffff;
     font-weight: bold;
 }
 .logo p span{
@@ -100,7 +95,7 @@ img{
 }
 
 .header-link a:hover {
-    color: #e1e1e1;
+    color: #38a0b5;
 }
 
 /* Search Bar */
@@ -140,8 +135,7 @@ img{
 
 /* Main Container */
 .main {
-    background: rgb(4,152,133);
-    background: linear-gradient(225deg, rgba(4,152,133,1) 0%, rgba(0,161,224,1) 100%);
+    background: rgb(0, 0, 0);
     padding: 2.5rem;
     min-height: 63vh;
 }
@@ -171,7 +165,7 @@ img{
     margin: 0px auto;
     display: flex;
     flex-direction: row;
-    box-shadow: 10px 12px 10px #004a5dc6;
+    box-shadow: 10px 12px 10px #ffffffc6;
 }
 
 .movie-poster {
@@ -259,7 +253,7 @@ img{
 }
 
 .fav-item {
-    box-shadow: 8px 6px #00496690;
+    box-shadow: 8px 8px 10px #87878789;
     margin: 0px 25px 25px 25px;
     width: 28%;
     padding: 10px;
